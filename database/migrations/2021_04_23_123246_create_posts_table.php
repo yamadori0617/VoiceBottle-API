@@ -15,12 +15,17 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid("user_id")->nullable(false);
+            $table->uuid("from_id")->nullable(false);
+            $table->uuid('to_id')->nullable(false);
             $table->string("audio_path")->nullable(false)->unique();
             $table->boolean("delivered")->default(false);
             $table->timestamps();
 
-            $table->foreign("user_id")
+            $table->foreign("from_id")
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
+            $table->foreign("to_id")
                     ->references('id')
                     ->on('users')
                     ->onDelete('cascade');
