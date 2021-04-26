@@ -9,6 +9,6 @@ class ReceiptStatusController extends BaseController
 {
     public function receipt_status(Request $request)
     {
-
+        
     }
 }

@@ -26,7 +26,7 @@ class PostController extends BaseController
             'user_id' => $user_id,
             'audio_path' => $audio_path,
         ]);
-        
+
         $success['id'] = $post['id'];
         $success['user_id'] = $post['user_id'];
         $success['audio_path'] = $post['audio_path'];

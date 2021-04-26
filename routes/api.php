@@ -15,24 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('register', 'API\RegisterController@register');
-//Route::post('post', 'API\PostController@post');
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::middleware('auth:api')->get('/post', function (Request $request) {
-    return;
-});
-*/
-Route::get('/user', function(Request $request) {
-    return $request->user();
-});
 
 Route::middleware('auth:api', 'throttle:60,1')->group(function () {
     // この中に書いたルーティング全てに適用される
+    Route::get('user', function(Request $request) {
+        return $request->user();
+    });
     Route::post('post', 'API\PostController@post');
+    Route::get('receipt_status', 'API\ReceiptStatusController@receipt_status');
 });
-
-Route::middleware('auth:api')->get('/receipt_status', function (Request $request) {
-    return;
-});                               
