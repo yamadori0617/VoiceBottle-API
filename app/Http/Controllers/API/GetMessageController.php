@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Post;
 use App\Http\Controllers\API\BaseController as BaseController;
+use ErrorException;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+
 
 class GetMessageController extends BaseController
 {
@@ -20,21 +24,28 @@ class GetMessageController extends BaseController
         }
 
         $api_token = $request->input('api_token');
-        $user_id = DB::select('SELECT id FROM users WHERE api_token = ?', [$api_token])[0]->id;
+        
+        try {
+            $user_id = DB::select('SELECT id FROM users WHERE api_token = ?', [$api_token])[0]->id;
+            $message = DB::select('SELECT * FROM posts
+                                   WHERE created_at = (
+                                        SELECT MIN(created_at) FROM `posts` 
+                                        WHERE to_id = ?
+                                        AND delivered = false) 
+                                   AND to_id = ?', [$user_id, $user_id])[0];    
 
-        $message = DB::select('SELECT * FROM posts
-                               WHERE created_at = (
-                                    SELECT MIN(created_at) FROM `posts` 
-                                    WHERE to_id = :user_id
-                                    AND delivered = 0) 
-                               AND to_id = :user_id', [':user_id' => $user_id]);
+        } catch (ErrorException $ex) {
+            return $this->sendError('Query Error');
+        }
 
-        $success["id"] = $message["id"];
-        $success["from_id"] = $message["from_id"];
-        $success["audio_path"] = $message["audio_path"];
+        $success["id"] = $message->id;
+        $success["from_id"] = $message->from_id;
+        $success["audio_path"] = $message->audio_path;
 
-        $message_id = $message["id"];
-        DB::update('UPDATE posts SET delivered = true WHERE id = :message_id', [':message_id' => $message_id]);
+        $message_id = $message->id;
+        DB::beginTransaction();
+        DB::update('UPDATE posts SET delivered = true WHERE id = :message_id', ['message_id' => $message_id]); 
+        DB::commit();
 
         return $this->sendResponse($success, "Post successfully.");
     }

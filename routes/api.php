@@ -21,5 +21,5 @@ Route::middleware('auth:api', 'throttle:60,1')->group(function () {
         return $request->user();
     });
     Route::post('post', 'API\PostController@post');
-    Route::get('get_message', 'API\GetMessageController@get_message');
+    Route::post('get_message', 'API\GetMessageController@get_message');
 });
