@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Receipt_status;
 use App\User;
 
 
@@ -31,9 +30,6 @@ class RegisterController extends BaseController
             'name' => $name,
             'password' => $password,
             'api_token' => $api_token,
-        ]);
-        $receipt_status = Receipt_status::create([
-            'id' => $user['id'],
         ]);
 
         $success['id'] = $user['id'];

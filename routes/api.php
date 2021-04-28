@@ -17,10 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', 'API\RegisterController@register');
 
 Route::middleware('auth:api', 'throttle:60,1')->group(function () {
-    // この中に書いたルーティング全てに適用される
     Route::get('user', function(Request $request) {
         return $request->user();
     });
     Route::post('post', 'API\PostController@post');
-    Route::get('get_message', 'API\GetMessageControllerController@get_message');
+    Route::get('get_message', 'API\GetMessageController@get_message');
 });

@@ -29,5 +29,13 @@ class GetMessageController extends BaseController
                                     AND delivered = 0) 
                                AND to_id = :user_id', [':user_id' => $user_id]);
 
+        $success["id"] = $message["id"];
+        $success["from_id"] = $message["from_id"];
+        $success["audio_path"] = $message["audio_path"];
+
+        $message_id = $message["id"];
+        DB::update('UPDATE posts SET delivered = true WHERE id = :message_id', [':message_id' => $message_id]);
+
+        return $this->sendResponse($success, "Post successfully.");
     }
 }

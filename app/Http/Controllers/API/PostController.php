@@ -29,7 +29,7 @@ class PostController extends BaseController
         $from_id = DB::select('select id from users where api_token = ?', [$api_token])[0]->id;
 
         if (is_null($to_id)) {
-            $to_id = $to_id = DB::select('SELECT id FROM users WHERE id <> ? 
+            $to_id = DB::select('SELECT id FROM users WHERE id <> ? 
                                           ORDER BY RAND() LIMIT 1', [$from_id])[0]->id;
         }
 
