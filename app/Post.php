@@ -7,7 +7,7 @@ use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'from_id', 'to_id', 'audio_path', 'delivered',
+        'from_id', 'to_id', 'audio_path',
     ];
 
     protected $hidden = [

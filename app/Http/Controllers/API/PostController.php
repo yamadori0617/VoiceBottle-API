@@ -14,9 +14,9 @@ class PostController extends BaseController
     public function post(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'audio_path' => 'max:80',
-            'from_id' => 'max:50',
-            'to_id' => 'nullable|max:200',
+            'audio_path' => 'required|max:80',
+            'to_id' => 'nullable|max:50',
+            'api_token' => 'required|max:100',
         ]);
 
         if($validator->fails()){
@@ -24,8 +24,9 @@ class PostController extends BaseController
         }
 
         $audio_path = $request->input('audio_path');
-        $from_id = $request->input('from_id');
         $to_id = $request->input('to_id');
+        $api_token = $request->input('api_token');
+        $from_id = DB::select('select id from users where api_token = ?', [$api_token])[0]->id;
 
         if (is_null($to_id)) {
             $to_id = $to_id = DB::select('SELECT id FROM users WHERE id <> ? 

@@ -4,7 +4,7 @@ namespace App;
 
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
 
-class Receipt_status extends Model
+class GetMessage extends Model
 {
     protected $fillable = [
         'id', 'from_id', 'latest_audio_path',
