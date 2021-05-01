@@ -32,20 +32,20 @@ class GetMessageController extends BaseController
                                         SELECT MIN(created_at) FROM `posts` 
                                         WHERE to_id = ?
                                         AND delivered = false) 
-                                   AND to_id = ?', [$user_id, $user_id])[0];    
+                                   AND to_id = ?', [$user_id, $user_id])[0];
+
+            $success["id"] = $message->id;
+            $success["from_id"] = $message->from_id;
+            $success["audio_path"] = $message->audio_path;
+            $success["sender_name"] = DB::select('SELECT name FROM users WHERE id = ?',[$message->from_id])[0]->name;
+
+            DB::beginTransaction();
+            DB::update('UPDATE posts SET delivered = true WHERE id = :message_id', ['message_id' => $message->id]); 
+            DB::commit();
 
         } catch (ErrorException $ex) {
             return $this->sendError('Query Error');
         }
-
-        $success["id"] = $message->id;
-        $success["from_id"] = $message->from_id;
-        $success["audio_path"] = $message->audio_path;
-
-        $message_id = $message->id;
-        DB::beginTransaction();
-        DB::update('UPDATE posts SET delivered = true WHERE id = :message_id', ['message_id' => $message_id]); 
-        DB::commit();
 
         return $this->sendResponse($success, "Post successfully.");
     }
