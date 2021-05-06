@@ -35,6 +35,7 @@ class RegisterController extends BaseController
         $success['id'] = $user['id'];
         $success['password'] = $user['password'];
         $success['name'] = $user['name'];
+        $success['api_token'] = $user['api_token'];
 
         return $this->sendResponse($success, "User register successfully.");
     }
