@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->uuid('id')->primary();
             $table->string('password')->nullable(false);
             $table->string('api_token', 80)->unique()->nullable()->default(null);
-            $table->string('name', 30)->default("匿名さん");
+            $table->string('name', 30)->nullable()->default("匿名さん");
             $table->timestamps();
         });
     }

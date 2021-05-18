@@ -34,9 +34,10 @@ class GetMessageController extends BaseController
                                         AND delivered = false) 
                                    AND to_id = ?', [$user_id, $user_id])[0];
 
-            $success["id"] = $message->id;
             $success["from_id"] = $message->from_id;
             $success["audio_path"] = $message->audio_path;
+            $success["created_at"] = $message->created_at;
+            $success["audio_content"] = \Storage::get($message->audio_path);
             $success["sender_name"] = DB::select('SELECT name FROM users WHERE id = ?',[$message->from_id])[0]->name;
 
             DB::beginTransaction();

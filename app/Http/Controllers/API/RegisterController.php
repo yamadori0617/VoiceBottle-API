@@ -25,12 +25,20 @@ class RegisterController extends BaseController
         $name = $request->input('name');
         $password = strval($this->randomPassword());
         $api_token = Str::random(60);
-        
-        $user = User::create([
-            'name' => $name,
-            'password' => $password,
-            'api_token' => $api_token,
-        ]);
+
+        if ($name == null) {
+            $user = User::create([
+                'password' => $password,
+                'api_token' => $api_token,
+            ]);
+            $user['name'] = "匿名さん";
+        } else {
+            $user = User::create([
+                'name' => $name,
+                'password' => $password,
+                'api_token' => $api_token,
+            ]);    
+        }
 
         $success['id'] = $user['id'];
         $success['password'] = $user['password'];
