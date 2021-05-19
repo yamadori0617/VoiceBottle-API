@@ -44,6 +44,9 @@ class PostController extends BaseController
                 'audio_path' => $audio_path,
             ]);
 
+            DB::update('update users set sent_counts = sent_counts + 1 where id = ?', [$from_id]);
+            DB::update('update users set received_counts = received_counts + 1 where id = ?', [$to_id]);
+
             //$save_file_path = storage_path().$audio_path
             //Storage::prepend($save_file_path, $content);
             \Storage::prepend($audio_path, $audio_content);

@@ -18,6 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable(false);
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->string('name', 30)->nullable()->default("匿名さん");
+            $table->integer('sent_counts')->default(0);
+            $table->integer('received_counts')->default(0);
             $table->timestamps();
         });
     }
